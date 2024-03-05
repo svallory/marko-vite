@@ -454,6 +454,10 @@ export default function markoPlugin(opts: Options = {}): vite.Plugin[] {
           return { id: renderAssetsRuntimeId };
         }
 
+        if (!isMarkoFile(importee)) {
+          return;
+        }
+
         let importeeQuery = getMarkoQuery(importee);
 
         if (importeeQuery) {
@@ -839,7 +843,7 @@ function getMarkoQuery(id: string) {
 }
 
 function isMarkoFile(id: string) {
-  return id.endsWith(markoExt);
+  return id.endsWith(markoExt) && !/^\/?[\0]?vitrual:/.test(id);
 }
 
 function toHTMLEntries(root: string, serverEntries: ServerManifest["entries"]) {
